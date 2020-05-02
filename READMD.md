@@ -2,9 +2,12 @@
 [+]
 
 #Step
+[+] mkvirtualenv ecommerce <bt>
+[+] pip install django <br>
+[+] workon ecommerce <br>
+[+] django-admin startproject ecommerce <br>
+[+] python manage.py runserver <br>
+[+] pytohn manage.py startapp store <br>
 
-[+] mkvirtualenv ecommerce
-[+] pip install django
-[+] workon ecommerce
-[+] django-admin startproject ecommerce
-[+] python manage.py runserver
+
+#Part 3
