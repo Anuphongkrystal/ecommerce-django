@@ -8,6 +8,5 @@
 [+] django-admin startproject ecommerce <br>
 [+] python manage.py runserver <br>
 [+] pytohn manage.py startapp store <br>
-
-
-#Part 3
+[+] pip install Pillow <br>
+  
