@@ -35,3 +35,6 @@ class Product(models.Model):
         ordering = ('name',) #เรียงลำดับชื่อสินค้า
         verbose_name = 'สินค้า'
         verbose_name_plural = "ข้อมูลสินค้า"
+
+    def get_url(self):
+        return reverse('productDetail',args=[self.category.slug,self.slug])

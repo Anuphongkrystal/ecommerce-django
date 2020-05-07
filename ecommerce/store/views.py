@@ -16,7 +16,7 @@ def index(request,category_slug=None):
 
 def productPage(request,category_slug,product_slug):
     try:
-        product = Product.objects.get(category_slug=category_slug,slug=product_slug) #ให้ Column category_slug == category_slug ที่ส่งมา และ ให้ Column slug = product_slug ที่ส่งมา
+        product = Product.objects.get(category__slug=category_slug,slug=product_slug) #ให้ Column category_slug == category_slug ที่ส่งมา และ ให้ Column slug = product_slug ที่ส่งมา
     except Exception as e :
         raise e
     return render(request,'product.html',{'product':product})
