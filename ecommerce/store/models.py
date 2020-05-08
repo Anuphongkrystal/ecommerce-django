@@ -38,3 +38,14 @@ class Product(models.Model):
 
     def get_url(self):
         return reverse('productDetail',args=[self.category.slug,self.slug])
+
+class Cart(models.Model):
+    cart_id = models.CharField(max_length=255,unique=True)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.cart_id
+
+    class Meta:
+        db_table = 'cart'
+        ordering = ('date_added',)

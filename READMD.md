@@ -13,4 +13,4 @@
 [+] python manage.py migrate <br>
 [+] python manage.py createsuperuser<br>
 
-# part 15 fix bugs
+# part 18

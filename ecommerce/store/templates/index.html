@@ -1,5 +1,6 @@
 {% extends 'layouts.html' %}
 {% load static %}
+{% load humanize %}
 {% block content %}
   <div class="container">
         <div class="row my-3">
@@ -11,7 +12,7 @@
               <h4 class="card-title">
                 <a href="{{ product.get_url }}">{{product.name}}</a>
               </h4>
-              <h5>{{product.price}}</h5>
+              <h5>{{product.price|intcomma}}</h5> <!--ถ้าเป็นหลัก พันจะมี comma มาคั่นไว้!-->
               <p class="card-text">{{product.description}}</p>
             </div>
             <div class="card-footer">
