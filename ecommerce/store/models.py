@@ -39,7 +39,7 @@ class Product(models.Model):
     def get_url(self):
         return reverse('productDetail',args=[self.category.slug,self.slug])
 
-class Cart(models.Model):
+class Cart(models.Model):#ตะกร้าสินค้า
     cart_id = models.CharField(max_length=255,unique=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
@@ -49,3 +49,18 @@ class Cart(models.Model):
     class Meta:
         db_table = 'cart'
         ordering = ('date_added',)
+
+class CartItem(models.Model): #รายการสินค้าที่อยู่ในตะกร้า
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    cart =  models.ForeignKey(Cart,on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = 'cartItem'
+
+    def sub_total(self):
+        return self.product.price * self.quantity
+
+    def __str__(self):
+        return self.cart
