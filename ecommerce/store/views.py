@@ -20,3 +20,9 @@ def productPage(request,category_slug,product_slug):
     except Exception as e :
         raise e
     return render(request,'product.html',{'product':product})
+
+def _cart_id(request):#session cart
+    cart = request.session.session_key
+    if not cart:
+        cart = request.session.create()
+    return cart
