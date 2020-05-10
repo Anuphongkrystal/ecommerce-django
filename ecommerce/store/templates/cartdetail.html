@@ -1,0 +1,11 @@
+{% extends 'layouts.html' %}
+{% load humanize %}
+{% block content %}
+  <div class="container">
+
+  <h2>รายละเอียดตะกร้าสินค้า</h2>
+
+  <p>{{total|intcomma}}</p>
+  <p>{{counter}}</p>
+  </div>
+{% endblock%}

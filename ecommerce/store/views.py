@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from store.models import Category,Product,Cart,CartItem
 
 def index(request,category_slug=None):
@@ -32,9 +32,45 @@ def addCart(request,product_id):
     product = Product.objects.get(id=product_id)
     #สร้างตะกร้าสินค้า
     try:
-        #ในกรณีที่สร้าตะกร้าสินค้ามาแล้ว
-        cart = Cart.objects.get(cart_id=_cart_id(request)) #เอาcolumn cart_id ไปเช็คกับฟังก์ชั่น def _cart_id():
+        #ในกรณีที่สร้างตะกร้าสินค้ามาแล้ว
+        cart = Cart.objects.get(cart_id=_cart_id(request))
     except Cart.DoesNotExist:
         #ถ้าตะกร้าสินค้ายังไม่ได้สร้าง ก็สร้างขึ้น
         cart = Cart.objects.create(cart_id=_cart_id(request))
         cart.save()
+
+    try:
+        #ซื้อสินค้าซ้ำกัน
+        cart_item = CartItem.objects.get(product=product,cart=cart)
+
+        #check ถ้าสินค้าที่ ซื้อน้อยกว่าในสต็อค
+        if cart_item.quantity < cart_item.product.stock:
+             #ให้เพิ่มทีล่ะหนึ่งตัว
+            cart_item.quantity += 1
+            #อัพเดตค่า
+            cart_item.save()
+    except CartItem.DoesNotExist: #check ว่าตัว object CartItem ยังไม่เคยถูกสร้างขึ้นมาเลย
+        #ซื้อครั้งแรก
+        #และมีการบันทึกลงฐานข้อมูล
+        cart_item = CartItem.objects.create(
+            product = product,
+            cart = cart,
+            quantity = 1,
+        )
+        cart_item.save()
+    return redirect('/')
+
+def cartdetail(request):
+    total = 0
+    counter = 0
+    cart_items = None
+    try:
+        cart = Cart.objects.get(cart_id=_cart_id(request)) #ดึงตะกร้า
+        cart_items = CartItem.objects.filter(cart=cart,active=True) #ดึงข้อมูลสินค้าในตะกร้า
+        for item in cart_items:
+            total += (item.product.price*item.quantity) #ราคาสินค้า * จำนวน
+            counter += item.quantity
+    except Exception as e:
+        pass
+    return render(request,'cartdetail.html',
+    dict(cart_items=cart_items,total=total,counter=counter))
