@@ -37,8 +37,13 @@
         </a>
       </li>
     <li class="nav-item">
-      <a class="nav-link text-light text-uppercase font-weight-bold px-3" href="cartdetail">
-        <i class="fas fa-shopping-cart"></i>0
+      <a class="nav-link text-light text-uppercase font-weight-bold px-3" href="{% url 'cartdetail' %}">
+        <i class="fas fa-shopping-cart"></i>
+        {% if item_count > 0 %}
+              {{item_count}}
+        {% else %}
+          0
+        {% endif%}
     </a>
   </li>
 

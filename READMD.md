@@ -14,4 +14,4 @@
 [+] python manage.py createsuperuser<br>
 
 
-#Part 25
+#part 26
