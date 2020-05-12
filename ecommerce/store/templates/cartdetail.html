@@ -5,7 +5,9 @@
 
   <div class="container">
     {% if not cart_items %}
-    <p>ไม่มีสินค้าในตะกร้า</p>
+    <div class="alert alert-danger my-2" role="alert">
+        <b>ไม่มีสินค้าในตะกร้า</b>
+    </div>
     {% else %}
     <div class="table-responsive">
     <table class="table table-condensed">
@@ -39,7 +41,7 @@
                     <p class="cart_total_price">{{item.sub_total|intcomma}}</p>
                 </td>
                 <td class="cart_delete">
-                    <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+                    <a class="cart_quantity_delete" onclick="return confirm('คุณต้องการลบสินค้าหรือไม่?')" href="{% url 'removeCart' item.product.id %}"><i class="fa fa-times"></i></a>
                 </td>
             </tr>
             {% endfor %}
