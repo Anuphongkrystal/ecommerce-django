@@ -1,0 +1,13 @@
+{% extends 'layouts.html' %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+  <div class="container">
+      <h2 align="center">แบบฟอร์มลงทะเบียน</h2>
+
+      <form class="" action="" method="post">
+        <p>{{form | crispy}}</p>
+        <button type="submit" class="btn btn-primary" name="submit"></button>
+      </form>
+  </div>
+{% endblock %}

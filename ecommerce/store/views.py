@@ -1,5 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from store.models import Category,Product,Cart,CartItem
+from store.forms import SignUpForm
 
 def index(request,category_slug=None):
 
@@ -86,3 +87,7 @@ def removeCart(request,product_id):
     #ลบรายการสินค้า 1 ออกจากตะกร้า A โดยลบจาก รายการสินค้าในตะกร้า(CartItem)
     cartItem.delete()
     return redirect('cartdetail')
+
+def signUpview(request):
+    form  = SignUpForm
+    return render(request,'signup.html',{'form':form})
