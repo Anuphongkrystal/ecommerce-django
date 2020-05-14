@@ -12,6 +12,4 @@
 [+] python manage.py makemigrations <br>
 [+] python manage.py migrate <br>
 [+] python manage.py createsuperuser<br>
-[+] pip install django-crispy-forms
-
-#part 30
+[+] pip install django-crispy-forms <br>
