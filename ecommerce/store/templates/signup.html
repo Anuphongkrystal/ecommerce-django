@@ -6,7 +6,9 @@
       <h2 align="center">แบบฟอร์มลงทะเบียน</h2>
 
       <form class="" action="" method="post">
+          {% csrf_token %}
         <p>{{form | crispy}}</p>
+
         <button type="submit" class="btn btn-primary" name="submit">Register</button>
       </form>
   </div>

@@ -1,6 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from store.models import Category,Product,Cart,CartItem
 from store.forms import SignUpForm
+from django.contrib.auth.models import Group,User
 
 def index(request,category_slug=None):
 
@@ -89,5 +90,23 @@ def removeCart(request,product_id):
     return redirect('cartdetail')
 
 def signUpview(request):
-    form  = SignUpForm
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        #เช็คความถูกต้องของ แบบฟอร์ม
+        if form.is_valid():
+            #บันทึกข้อมูล user
+            form.save()
+            #บันทึกกลุ่มข้อมูล ของ user
+            #ดึง username จาก form เอามาใช้
+            #เช็คความถูกต้อง
+            username = form.cleaned_data.get('username')
+            #ดึงข้อมูล user จากฐานข้อมูล
+            signUpUser = User.objects.get(username=username)
+            #จัดกลุ่ม user
+            customer_group = Group.objects.get(name="Customer")
+
+            customer_group.user_set.add(signUpUser)
+    else:
+        form = SignUpForm()
+
     return render(request,'signup.html',{'form':form})
