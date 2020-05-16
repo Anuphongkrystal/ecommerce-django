@@ -2,6 +2,10 @@ from django.shortcuts import render,get_object_or_404,redirect
 from store.models import Category,Product,Cart,CartItem
 from store.forms import SignUpForm
 from django.contrib.auth.models import Group,User
+#form
+from django.contrib.auth.forms import AuthenticationForm
+#เช็คความถูกต้องของข้อมูล
+from django.contrib.auth import login, authenticate
 
 def index(request,category_slug=None):
 
@@ -89,7 +93,7 @@ def removeCart(request,product_id):
     cartItem.delete()
     return redirect('cartdetail')
 
-def signUpview(request):
+def signUpView(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
         #เช็คความถูกต้องของ แบบฟอร์ม
@@ -110,3 +114,21 @@ def signUpview(request):
         form = SignUpForm()
 
     return render(request,'signup.html',{'form':form})
+
+def signInView(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        #เช็คความถูกต้องของแบบฟอร์ม
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username,password=password)
+            if user is not None :
+                login(request,user)
+                return redirect('home')
+            else:
+                return redirect('signUp')
+    else:
+        #สร้าง obj form login
+        form = AuthenticationForm()
+    return render(request,'signin.html',{'form':form})
