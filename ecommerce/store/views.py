@@ -147,3 +147,7 @@ def signInView(request):
 def signOutView(request):
     logout(request)
     return redirect('signIn')
+
+def search(request):
+    products = Product.objects.filter(name__contains=request.GET['title'])
+    return render(request,'index.html',{'products':products})
