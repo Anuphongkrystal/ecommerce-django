@@ -6,9 +6,9 @@ from django.contrib.auth.models import Group,User
 from django.contrib.auth.forms import AuthenticationForm
 #เช็คความถูกต้องของข้อมูล
 from django.contrib.auth import login, authenticate,logout
+from django.core.paginator import Paginator,EmptyPage,InvalidPage # import paginator,หน้าว่าง,systex ผิดๆ
 
 def index(request,category_slug=None):
-
     products = None
     category_page = None
     if category_slug != None : #เซต ฟิวเตอร์
@@ -17,8 +17,19 @@ def index(request,category_slug=None):
     else :
         products = Product.objects.all().filter(available=True)
 
+    paginator = Paginator(products,2) # แสดง 4 รายการต่อ 1 หน้า
 
-    return render(request,'index.html',{'products':products,'category':category_page})
+    try:
+        page = int(request.GET.get('page','1')) #convert string to int
+    except:
+        page = 1
+
+    try:
+        productperPage = paginator.page(page)
+    except (EmptyPage,InvalidPage) :
+        productperPage = paginator.page(paginator.num_pages)
+
+    return render(request,'index.html',{'products':productperPage,'category':category_page})
 
 def productPage(request,category_slug,product_slug):
     try:
