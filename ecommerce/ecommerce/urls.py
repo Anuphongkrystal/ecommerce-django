@@ -30,6 +30,9 @@ urlpatterns = [
     path('cart/remove/<int:product_id>',views.removeCart,name="removeCart"),
     path('account/create',views.signUpView,name="signUp"),
     path('account/login',views.signInView,name="signIn"),
+    path('account/logout',views.signOutView,name="signOut"),
+    
+
 ]
 
 if settings.DEBUG :

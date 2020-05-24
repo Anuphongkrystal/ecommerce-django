@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group,User
 #form
 from django.contrib.auth.forms import AuthenticationForm
 #เช็คความถูกต้องของข้อมูล
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate,logout
 
 def index(request,category_slug=None):
 
@@ -132,3 +132,7 @@ def signInView(request):
         #สร้าง obj form login
         form = AuthenticationForm()
     return render(request,'signin.html',{'form':form})
+
+def signOutView(request):
+    logout(request)
+    return redirect('signIn')
