@@ -7,6 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 #เช็คความถูกต้องของข้อมูล
 from django.contrib.auth import login, authenticate,logout
 from django.core.paginator import Paginator,EmptyPage,InvalidPage # import paginator,หน้าว่าง,systex ผิดๆ
+from django.contrib.auth.decorators import login_required #เอาไว้ดักให้ user login(บังคับให้ Login)
 
 def index(request,category_slug=None):
     products = None
@@ -44,6 +45,8 @@ def _cart_id(request):#session cart
         cart = request.session.create()
     return cart
 
+#ถ้ามีการเรียกใช้งานฟังก์ชั่นนี้ แต่ไม่มีการ Login จะให้กลํบไป Login ก่อน def addCart();
+@login_required(login_url='signIn')
 def addCart(request,product_id):
     #ดึงสินค้าที่ซื้อขึ้นมาแสดง
     product = Product.objects.get(id=product_id)
