@@ -35,6 +35,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'static','media')
 
 # Application definition
 
+#ไลบราลี่ที่เราอยากให้มันทำงานร่วมกับ Project ของเรา (ในกรณีที่ ติดตั้งมาจากข้างนอก)
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'store',
     'django.contrib.humanize',
     'crispy_forms',
+    'stripe'
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4' #ระยุ template packs
+
+#stripe API
+PUBLIC_KEY = 'pk_test_XQZo3gQ5iJsMJpreGWiSuafC00I4V7iACK'
+SECRET_KEY = 'sk_test_oUKLkJ9UXADyMFBpcyZAe81F001eriG1YM'

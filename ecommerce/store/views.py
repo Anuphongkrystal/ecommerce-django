@@ -8,6 +8,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate,logout
 from django.core.paginator import Paginator,EmptyPage,InvalidPage # import paginator,หน้าว่าง,systex ผิดๆ
 from django.contrib.auth.decorators import login_required #เอาไว้ดักให้ user login(บังคับให้ Login)
+from django.conf import settings #เอา stripe api (PUBLIC_KEY and SECRET_KEY)
+import stripe
 
 def index(request,category_slug=None):
     products = None
@@ -92,8 +94,44 @@ def cartdetail(request):
             counter += item.quantity
     except Exception as e:
         pass
+
+    #ทำงานฝั่ง Backend
+    stripe.api_key = settings.SECRET_KEY
+
+    stripe_total = int(total*100)
+    description = "Payment Online"
+
+    #ทำงานฝั่ง fonend
+    data_key = settings.PUBLIC_KEY
+
+    if request.method == "POST":
+        try :
+            token = request.POST['stripeToken']
+            email = request.POST['stripeEmail']
+            customer = stripe.Customer.create(
+                email = email,
+                source = token
+            )
+            charge = stripe.Charge.create(
+                amount = stripe_total,
+                currency = 'thb',
+                description = description,
+                customer = customer.id
+            )
+        except stripe.error.CardError as e :
+            return False , e
+
+
+
     return render(request,'cartdetail.html',
-    dict(cart_items=cart_items,total=total,counter=counter))
+    dict(
+        cart_items=cart_items,
+        total=total,
+        counter=counter,
+        data_key=data_key,
+        stripe_total=stripe_total,
+        description=description
+        ))
 
 def removeCart(request,product_id):
     #ทำงานกับตะกร้าสินค้า A

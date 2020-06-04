@@ -13,3 +13,4 @@
 [+] python manage.py migrate <br>
 [+] python manage.py createsuperuser<br>
 [+] pip install django-crispy-forms <br>
+[+] pip install stripe <br>
