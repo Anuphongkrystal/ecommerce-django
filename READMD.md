@@ -14,3 +14,6 @@
 [+] python manage.py createsuperuser<br>
 [+] pip install django-crispy-forms <br>
 [+] pip install stripe <br>
+
+
+#Part 53(12 นาที)

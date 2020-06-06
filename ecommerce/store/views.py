@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from store.models import Category,Product,Cart,CartItem
+from store.models import Category,Product,Cart,CartItem,Order,OrderItem
 from store.forms import SignUpForm
 from django.contrib.auth.models import Group,User
 #form
@@ -108,6 +108,12 @@ def cartdetail(request):
         try :
             token = request.POST['stripeToken']
             email = request.POST['stripeEmail']
+            name = request.POST['stripeBillingName']
+            address = request.POST['stripeBillingAddressLine1']
+            city = request.POST['stripeBillingAddressCity']
+            postcode = request.POST['stripeShippingAddressZip']
+
+
             customer = stripe.Customer.create(
                 email = email,
                 source = token
@@ -118,6 +124,38 @@ def cartdetail(request):
                 description = description,
                 customer = customer.id
             )
+
+            #บันทึกข้อมูลการสั่งซื้อ
+            order = Order.objects.create(
+                name = name,
+                address = address,
+                city = city,
+                postcode = postcode,
+                total = total,
+                email = email,
+                token = token
+            )
+            order.save()
+
+            #บันทึกรายการสั่งซื้อ
+            for item in cart_items:
+                order_item = OrderItem.objects.create(
+                    product = item.product.name,
+                    quantity = item.quantity,
+                    price = item.product.price,
+                    order = order
+                )
+                order_item.save()
+
+                #ลดจำนวนสินค้าใน stock
+                product =  Product.objects.get(id=item.product.id)
+                product.stock = int(item.product.stock - order_item.quantity)
+                product.save()
+
+                #ลบรายการสินค้า ออกจากตะกร้า
+                item.delete()
+            return redirect('home')
+
         except stripe.error.CardError as e :
             return False , e
 
