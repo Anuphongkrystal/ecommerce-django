@@ -1,5 +1,4 @@
 #Handbook
-[+]
 
 #Step
 [+] mkvirtualenv ecommerce <bt>
@@ -14,6 +13,7 @@
 [+] python manage.py createsuperuser<br>
 [+] pip install django-crispy-forms <br>
 [+] pip install stripe <br>
-
-
-#Part 53(12 นาที)
+//ถ้ามีหลาย App ต้องระบุชื่อ App ด้วย
+[+] python manage.py makemigrations store<br>
+//เพื่อไม่ให้เกิดผลกระทบตอนที่ เปลี่ยนแปลงmodel
+[+] python manage.py migrate --fake store<br>

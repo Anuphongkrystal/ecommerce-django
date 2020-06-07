@@ -230,3 +230,19 @@ def signOutView(request):
 def search(request):
     products = Product.objects.filter(name__contains=request.GET['title'])
     return render(request,'index.html',{'products':products})
+
+def orderHistory(request):
+    #เช็คuser คนนั้นๆๆ ที่ เข้าสู่ระบบ
+    if request.user.is_authenticated:
+        #เอา email ของคนที่ Login
+        email = str(request.user.email)
+        #และ เอามาเช็คว่า Email นั้น มีรายการอะไรบ้างใน Order
+        orders = Order.objects.filter(email=email)
+    return render(request,'orders.html',{'orders':orders})
+
+def viewOrder(request,order_id):
+    if request.user.is_authenticated:
+        email = str(request.user.email)
+        order = Order.objects.filter(email=email,id=order_id)
+        orderitem = OrderItem.objects.filter(order=order)
+    return render(request,'viewOrder.html',{'orders':order,'order_items':orderitem})

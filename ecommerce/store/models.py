@@ -78,9 +78,13 @@ class Order(models.Model):#ใบสั่งซื้อ
     total = models.DecimalField(max_digits=10,decimal_places=2)
     email = models.EmailField(max_length=250,blank=True)
     token = models.CharField(max_length=255,blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
 
     class Meta:
         db_table = "Order" #ตั้งชื่อตารางเป็น Order (ไม่ต้องไปอ้างอิงชื่อแอป)
+        ordering = ('id',) #เรียงจากน้อยไปมาก
     def __str__(self):
         return str(self.id) #รหัสใบสั่งซื้อแบบ auto
 
@@ -89,13 +93,14 @@ class OrderItem(models.Model):
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=10,decimal_places=2)
     order = models.ForeignKey(Order,on_delete=models.CASCADE) #ถ้ามีการลบข้อมูลมันจะลบทั้งสองส่วน
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'OrderItem'
-
+        ordering = ('order',)
     def sub_total(self):
         return self.quantity*self.price
 
     def __str__(self):
         return self.product
-        
